@@ -179,14 +179,14 @@ ageCalculator();
             speech.text = ('Opening Google');
           }
           else if (speech.text.includes("windows update")) {
-            window.open("ms-settings:windows-update");
+            window.open("ms-settings:windowsupdate");
             speech.text = ('Opening Windows Update Settings');
           }
           else if (speech.text.includes("editor")) {
             window.open("https://chrahman.github.io/code-editor/", "_blank");
             speech.text = ('Opening Your Code editor');
           }
-		  else if (speech.text.includes("editor")) {
+	  else if (speech.text.includes("editor")) {
             window.open("https://chrahman.github.io/code-editor/", "_blank");
             speech.text = ('Opening Your Code editor');
           }
