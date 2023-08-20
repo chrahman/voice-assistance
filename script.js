@@ -1,47 +1,19 @@
 // get voice
 var synth = window.speechSynthesis;
-var voiceSelect = document.createElement('select');
-voiceSelect.hidden = 'hidden';
-document.body.appendChild(voiceSelect);
 var voices = [];
 
 // Function to select voice
 function selectVoice() {
-  var selectedVoice = null;
-
-  for (i = 0; i < voices.length; i++) {
+  for (var i = 0; i < voices.length; i++) {
     if (voices[i].name === 'Google US English') {
-      selectedVoice = voices[i];
-      break;
+      return voices[i];
     }
   }
-
-  if (!selectedVoice && voices.length > 0) {
-    selectedVoice = voices[0];
-  }
-
-  return selectedVoice;
+  return voices.length > 0 ? voices[0] : null;
 }
 
 function populateVoiceList() {
   voices = synth.getVoices();
-  var selectedIndex = voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex;
-  voiceSelect.innerHTML = '';
-  
-  for(i = 0; i < voices.length ; i++) {
-    var option = document.createElement('option');
-    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-
-    if(voices[i].default) {
-      option.textContent += ' -- DEFAULT';
-    }
-
-    option.setAttribute('data-lang', voices[i].lang);
-    option.setAttribute('data-name', voices[i].name);
-    voiceSelect.appendChild(option);
-  }
-
-  voiceSelect.selectedIndex = selectedIndex;
 }
 
 populateVoiceList();
@@ -157,23 +129,21 @@ ageCalculator();
     ]
 
 
-// welcome massege
-    window.onload = function() {
-      var speech1 = new SpeechSynthesisUtterance();
-      var finalText = welcome[Math.floor(Math.random() * welcome.length)];
-      speech1.text = finalText;
-      speech1.volume = 1;
-      speech1.rate = 1;
-      speech1.pitch = 1;
-      var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
-      for(i = 0; i < voices.length ; i++) {
-        if(voices[i].name === selectedOption) {
-          speech1.voice = voices[i];
-          break;
-        }
-      }
-      window.speechSynthesis.speak(speech1);
-    }
+// Welcome message
+window.onload = function() {
+  var speech1 = new SpeechSynthesisUtterance();
+  var finalText = welcome[Math.floor(Math.random() * welcome.length)];
+  speech1.text = finalText;
+  speech1.volume = 1;
+  speech1.rate = 1;
+  speech1.pitch = 1;
+  var selectedVoice = selectVoice();
+  if (selectedVoice) {
+    speech1.voice = selectedVoice;
+    window.speechSynthesis.speak(speech1);
+  }
+}
+
 //end
     function record() {
       if (SpeechRecognition) {
