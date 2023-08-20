@@ -1,35 +1,54 @@
-
 // get voice
-    var synth = window.speechSynthesis;
-    var voiceSelect = document.createElement('select');
-    voiceSelect.hidden = 'hidden';
-    document.body.appendChild(voiceSelect);
-    var voices = [];
+var synth = window.speechSynthesis;
+var voiceSelect = document.createElement('select');
+voiceSelect.hidden = 'hidden';
+document.body.appendChild(voiceSelect);
+var voices = [];
 
-    function populateVoiceList() {
-      voices = synth.getVoices();
-      var selectedIndex = voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex; //select voice
-      voiceSelect.innerHTML = '';
-      for(i = 0; i < voices.length ; i++) {
-        var option = document.createElement('option');
-        option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+// Function to select voice
+function selectVoice() {
+  var selectedVoice = null;
 
-        if(voices[i].default) {
-          option.textContent += ' -- DEFAULT';
-        }
+  for (i = 0; i < voices.length; i++) {
+    if (voices[i].name === 'Google US English') {
+      selectedVoice = voices[i];
+      break;
+    }
+  }
 
-        option.setAttribute('data-lang', voices[i].lang);
-        option.setAttribute('data-name', voices[i].name);
-        voiceSelect.appendChild(option);
-      }
-      voiceSelect.selectedIndex = selectedIndex;
+  if (!selectedVoice && voices.length > 0) {
+    selectedVoice = voices[0];
+  }
+
+  return selectedVoice;
+}
+
+function populateVoiceList() {
+  voices = synth.getVoices();
+  var selectedIndex = voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex;
+  voiceSelect.innerHTML = '';
+  
+  for(i = 0; i < voices.length ; i++) {
+    var option = document.createElement('option');
+    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+
+    if(voices[i].default) {
+      option.textContent += ' -- DEFAULT';
     }
 
-    populateVoiceList();
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-//end
+    option.setAttribute('data-lang', voices[i].lang);
+    option.setAttribute('data-name', voices[i].name);
+    voiceSelect.appendChild(option);
+  }
+
+  voiceSelect.selectedIndex = selectedIndex;
+}
+
+populateVoiceList();
+
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = populateVoiceList;
+}
 
 // Age calculator
 function ageCalculator() {
