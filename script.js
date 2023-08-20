@@ -275,13 +275,12 @@ window.onload = function() {
           else {
             submit1.submit();
           }
-          var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
-          for(i = 0; i < voices.length ; i++) {
-            if(voices[i].name === selectedOption) {
-              speech.voice = voices[i];
-              break;
-            }
-          }
+         
+          var selectedVoice = selectVoice();
+	  if (selectedVoice) {
+	    speech.voice = selectedVoice;
+	  }
+             
           speech.volume = 1;
           speech.rate = 1;
           speech.pitch = 1;
